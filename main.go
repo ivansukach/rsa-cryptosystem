@@ -10,7 +10,7 @@ func Euler(p *big.Int, q *big.Int) *big.Int {
 	return fi.Mul(p.Sub(p, big.NewInt(1)), q.Sub(q, big.NewInt(1)))
 }
 func modifiedGCD(a *big.Int, b *big.Int) (*big.Int, *big.Int) {
-	q := make([]big.Int, 0)
+	q := make([]*big.Int, 0)
 	r := make([]*big.Int, 0)
 	temp := new(big.Int)
 	tempQ := big.NewInt(0)
@@ -23,7 +23,7 @@ func modifiedGCD(a *big.Int, b *big.Int) (*big.Int, *big.Int) {
 		*b = *tempR
 	}
 	r = append(r, tempR)
-	q = append(q, *tempQ)
+	q = append(q, tempQ)
 	aLatest := true
 	for r[len(r)-1].Cmp(big.NewInt(0)) != 0 {
 		tempQ = big.NewInt(0)
@@ -38,7 +38,7 @@ func modifiedGCD(a *big.Int, b *big.Int) (*big.Int, *big.Int) {
 			aLatest = false
 		}
 		r = append(r, tempR)
-		q = append(q, *tempQ)
+		q = append(q, tempQ)
 	}
 	for i := range q {
 		log.Info("q[", i, "]: ", q[i].String())
@@ -50,7 +50,7 @@ func modifiedGCD(a *big.Int, b *big.Int) (*big.Int, *big.Int) {
 	y := big.NewInt(1)
 	tempX := big.NewInt(0)
 	for i := 0; i < len(q); i++ {
-		temp.Mul(x, &q[len(q)-1-i])
+		temp.Mul(x, q[len(q)-1-i])
 		tempX.Set(x)
 		x.Sub(y, temp)
 		y.Set(tempX)
