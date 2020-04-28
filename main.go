@@ -46,30 +46,14 @@ func modifiedGCD(a *big.Int, b *big.Int) (*big.Int, *big.Int) {
 	for i := range r {
 		log.Info("r[", i, "]: ", r[i].String())
 	}
-	x1 := new(big.Int)
-	y1 := new(big.Int)
-	x := new(big.Int)
-	y := new(big.Int)
-	//if a.Cmp(big.NewInt(0)) == 0 {
-	x1 = big.NewInt(0)
-	y1 = big.NewInt(1)
-	//} else {
-	//	x1 = big.NewInt(0)
-	//	y1 = big.NewInt(1)
-	//}
+	x := big.NewInt(0)
+	y := big.NewInt(1)
+	tempX := big.NewInt(0)
 	for i := 0; i < len(q); i++ {
-		//log.Infoln("На входе x1:", x1, "iteration: ", i)
-		//log.Infoln("На входе y1:", y1, "iteration: ", i)
-		x = big.NewInt(0)
-		temp.Mul(x1, &q[len(q)-1-i])
-		x.Sub(y1, temp)
-		*y = *x1
-		//log.Infoln("x:", x, "iteration: ", i)
-		//log.Infoln("y:", y, "iteration: ", i)
-		*x1 = *x
-		*y1 = *y
-		//log.Infoln("На выходе x1:", x1, "iteration: ", i)
-		//log.Infoln("На выходе y1:", y1, "iteration: ", i)
+		temp.Mul(x, &q[len(q)-1-i])
+		tempX.Set(x)
+		x.Sub(y, temp)
+		y.Set(tempX)
 	}
 	if !aLatest {
 		log.Info("Coefficient X: ", x)
@@ -80,19 +64,6 @@ func modifiedGCD(a *big.Int, b *big.Int) (*big.Int, *big.Int) {
 		log.Info("Coefficient Y: ", x)
 		return r[len(r)-2], y
 	}
-}
-
-func binPow(a int, n int) int {
-	res := 1
-	for n > 0 {
-		if n%2 == 1 {
-			res *= a
-		}
-
-		a *= a
-		n >>= 1
-	}
-	return res
 }
 func binPowBigIntModN(x *big.Int, e *big.Int, n *big.Int) *big.Int {
 	res := big.NewInt(1)
